@@ -1,0 +1,14 @@
+public class Level {
+	private boolean unlocked;
+	private int[][] grid = new int[50][40];
+	
+	
+	public Level() {
+		for(int i = 0; i<)
+	}
+	
+	public boolean getUnlockState() {
+		return this.unlocked;
+	}
+	
+}
