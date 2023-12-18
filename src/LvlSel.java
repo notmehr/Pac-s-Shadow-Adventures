@@ -6,7 +6,7 @@ import java.io.*;
 import java.awt.geom.RoundRectangle2D;
 
 public class LvlSel extends JPanel {
-	Image moon = null;
+	static Image moon = null;
 	Image basement = null;
 	Image colisseum = null;
 	Image mars = null;
@@ -63,7 +63,9 @@ public class LvlSel extends JPanel {
 
 	}
 	
-	
+	public Image getMoon() {
+		return moon;
+	}
 	
 	
 	public void paint(Graphics g) {
@@ -74,7 +76,7 @@ public class LvlSel extends JPanel {
 		rr.setRoundRect(100.0, 150.0, 816.0, 500.0, 20.0, 20.0);
 
 		// draw background image + black tinted rectangle to darken it
-		g2d.drawImage(currImg, 0, 0, null);
+		g2d.drawImage(getMoon(), 0, 0, null);
         g.setColor(new Color(0,0,0,200));
         g.fillRect(0, 0, 1016, 839);
         
@@ -93,7 +95,7 @@ public class LvlSel extends JPanel {
         
         //sets the clip to the round rectangle + draws level button image
 	    g.setClip(rr);
-        g2d.drawImage(currImg, 100, 100, 816, 600, null);
+        g2d.drawImage(getMoon(), 100, 100, 816, 600, null);
         g.setClip(null);
         g.drawRoundRect(99, 149, 817, 501, 20, 20);
         
@@ -110,7 +112,8 @@ public class LvlSel extends JPanel {
       	g2d.setColor(Color.WHITE);
       	g.drawPolygon(new int[] {a, a, a+30}, new int[] {b, b+50, b+25}, 3);
       	g.drawPolygon(new int[] {c, c, c-30}, new int[] {b, b+50, b+25}, 3);
-
+      	g2d.setStroke(oldStroke);
+      	
 	}
 
 	public static void main(String[] args) throws InterruptedException {
