@@ -1,0 +1,63 @@
+public class Map {
+private boolean left, right, top, bottom, point, orb;
+
+// each value stores whether theres a wall or not
+public Map(boolean lef, boolean ri, boolean toppy, boolean bot, boolean po, boolean or) {
+left = lef;
+right = ri;
+top = toppy;
+bottom = bot;
+point = po;
+orb = or;
+}
+
+public boolean getLeft() {
+return left;
+}
+
+public void setLeft(boolean left) {
+	this.left = left;
+}
+
+public boolean getRight() {
+	return right;
+}
+
+public void setRight(boolean right) {
+	this.right = right;
+}
+
+public boolean getTop() {
+	return top;
+}
+
+public void setTop(boolean top) {
+	this.top = top;
+}
+
+public boolean getBottom() {
+	return bottom;
+}
+
+public void setBottom(boolean bottom) {
+	this.bottom = bottom;
+}
+
+public boolean getPoint() {
+	return point;
+}
+
+public void setPoint(boolean point) {
+	this.point = point;
+}
+
+public boolean getOrb() {
+	return orb;
+}
+
+public void setOrb(boolean orb) {
+	this.orb = orb;
+}
+
+  
+}
