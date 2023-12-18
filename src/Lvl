@@ -7,58 +7,104 @@ import java.io.*;
 import java.awt.geom.RoundRectangle2D;
 
 public class Lvl extends JPanel{
-	private boolean unlocked;
-	private boolean[][] grid = new boolean[24][17];
-	
-	
-	public Lvl() {
-		
-	}
-	
-	public boolean getUnlockState() {
-		return this.unlocked;
-	}
-	
-	public void paint(Graphics g) {
-		Graphics2D g2d = (Graphics2D) g;
-		//bg(g2d);
-		
-		g2d.drawImage(LvlSel.getMoon(), 0, 0, null);
-        g.setColor(new Color(0,0,0,200));
-        g.fillRect(0, 0, 1000, 800);
-    
-        //TEST GRID
+  
+  private Map[][] grid = new Map[31][23];
+  private LvlSel ls = new LvlSel();
+
+  public Lvl() {
+    try {
+      FileReader fr = new FileReader("mapdata1.txt");
+      BufferedReader br = new BufferedReader(fr);
+      String line;
+      // x value counter
+      int x = 0;
+      // y value counter
+      int y = 0;
+      //max x value
+      int mx = 30;
+      while((line=br.readLine()) != null) {
+    	  //creates a map object for each square from the left
+        grid[x][y] = new Map(false, false, false, false, false, false);
+        //creates an equivalent map object for each square from the right as long as its not in the middle b/c that would be equal to the previous line as odd # of x vals
+        if(mx-x!=x) grid[mx-x][y] = new Map(false, false, false, false, false, false);
         
-		g2d.setColor(Color.white);
-	
-		for(int i = 35; i<965; i+=30) {
-      		for(int j = 40; j<730; j+=30) {
-      	      	g.drawRect(i,  j, 30, 30);
-      		}
-      	}
-		g.setColor(Color.yellow);
-		g.fillOval(35, 40, 30, 30);
-		g.drawLine(100, 0, 100, 40);
-		g.drawLine(100, 760, 100, 800);
-	}
-	
-  	
-	public void bg(Graphics g2d) {
-		g2d.setColor(Color.black);
-		g2d.fillRect(0,0, 1000, 800);
-	}
-	
-	public static void main(String[] args) throws InterruptedException {
-		JFrame frame = new JFrame("A");
-		Lvl a = new Lvl();
-		frame.add(a);
-	//	  frame.setResizable(false);
-		  frame.setSize(1016, 839);
-		  frame.setVisible(true);
-		  frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	
-		  while(true) {
-			  a.repaint();
-			  Thread.sleep(10);
-			  }
-		  }
+        //if x is not past the middle then set it to values
+        if(x<=16) {
+        	grid[x][y].setLeft(line.charAt(0)=='1');
+        	grid[x][y].setTop(line.charAt(1)=='1');
+        	grid[x][y].setRight(line.charAt(2)=='1');
+        	grid[x][y].setBottom(line.charAt(3)=='1');
+        	grid[mx-x][y].setLeft(line.charAt(2)=='1');
+        	grid[mx-x][y].setRight(line.charAt(0)=='1');
+        	grid[mx-x][y].setTop(line.charAt(1)=='1');
+        	grid[mx-x][y].setBottom(line.charAt(3)=='1');
+        }
+        //if the square is empty (no borders) set point to true indicating there is a point
+        if(!grid[x][y].getLeft() & !grid[x][y].getRight() & !grid[x][y].getTop() & !grid[x][y].getBottom()) grid[x][y].setPoint(true);
+        if(!grid[mx-x][y].getLeft() & !grid[mx-x][y].getRight() & !grid[mx-x][y].getTop() & !grid[mx-x][y].getBottom()) grid[mx-x][y].setPoint(true);
+
+        //move to the next x val
+        x++;
+        //once x gets to the middle, reset it to 0 and go to the next row
+        if(x>=16){
+          x=0; y++;
+        }
+      }
+      
+      br.close();
+      
+    } catch(IOException e){
+      System.out.println("Error in reading map data");
+    }
+   
+  }
+
+  public void paint(Graphics g) {
+    Graphics2D g2d = (Graphics2D) g;
+//draws moon as background for now
+    g2d.drawImage(ls.getMoon(), 35, 40, 930, 690, null);
+    g.setColor(new Color(0, 0, 0, 65));
+    g.fillRect(0, 0, 1000, 800);
+
+        //TEST GRID
+
+    g2d.setColor(Color.white);
+
+    for(int i = 0; i<31; i++) {
+          for(int j = 0; j<23; j++) { //prints vertically
+        	  //horizontal margin is 35, so add 35 to every x value
+        	  //vertical margin is 40 from the top, so add 40 to each y val
+        	  int x = 35 + 30*(i);
+        	  int y = 40 + 30*(j);
+        	  g.setColor(Color.white);
+        	  //if the value for that line is true, draw it
+        	  if(grid[i][j].getLeft()) g.drawLine(x, y, x, y+30);
+        	  if(grid[i][j].getRight()) g.drawLine(x+30, y, x+30, y+30);
+        	  if(grid[i][j].getTop()) g.drawLine(x, y, x+30, y);
+        	  if(grid[i][j].getBottom()) g.drawLine(x, y+30, x+30, y+30);
+        	  g.setColor(Color.yellow);
+        	  //if the point value is true, draw it
+        	  if(grid[i][j].getPoint()) g.fillOval(x+10, y+10, 10, 10);
+          }
+          }
+    
+    //draw pac
+    g.setColor(Color.yellow);
+    g.fillOval(35+30*15, 40+30*17, 30, 30);
+  }
+
+  public static void main(String[] args) throws InterruptedException {
+    JFrame frame = new JFrame("A");
+    Lvl a = new Lvl();
+    frame.add(a);
+  //	  frame.setResizable(false);
+      frame.setSize(1016, 839);
+      frame.setVisible(true);
+      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	
+      while(true) {
+        a.repaint();
+        Thread.sleep(10);
+        }
+      }
 }
+
