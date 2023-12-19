@@ -13,20 +13,21 @@ public class LvlSel extends JPanel {
 	Image currImg = null;
 	Image[] bg;
 	private int x, y, g;
+	//
 	public LvlSel() {
 		try {
 			moon = ImageIO.read(new File("moon.png"));
 			basement = ImageIO.read(new File("basement.png"));
-			colisseum = ImageIO.read(new File("colisseum.jfif"));
-			mars = ImageIO.read(new File("mars.jfif"));
+		//	colisseum = ImageIO.read(new File("colisseum.jfif"));
+		//	mars = ImageIO.read(new File("mars.jfif"));
 		} catch (IOException e) {
 		}
 		
 		moon = moon.getScaledInstance(1000, 800, Image.SCALE_DEFAULT);
-		basement = basement.getScaledInstance(1000,  800, Image.SCALE_DEFAULT);
-		colisseum = colisseum.getScaledInstance(1000,  800, Image.SCALE_DEFAULT);
-		mars = mars.getScaledInstance(1000,  800, Image.SCALE_DEFAULT);
-		bg = new Image[] {moon, basement, colisseum, mars};
+		//basement = basement.getScaledInstance(1000,  800, Image.SCALE_DEFAULT);
+	//	colisseum = colisseum.getScaledInstance(1000,  800, Image.SCALE_DEFAULT);
+		//mars = mars.getScaledInstance(1000,  800, Image.SCALE_DEFAULT);
+		bg = new Image[] {moon};
 		
 		addKeyListener(new KeyListener() 
 		{
@@ -48,6 +49,8 @@ public class LvlSel extends JPanel {
 					else g++;
 					
 					currImg = bg[g];
+					
+					
 				}
 				else if(e.getKeyCode() == KeyEvent.VK_LEFT) {
 					if(g-1<0) g=bg.length-1;
@@ -67,7 +70,10 @@ public class LvlSel extends JPanel {
 		return moon;
 	}
 	
-	
+	public void animA(Graphics g) {
+		Graphics2D g2d = (Graphics2D) g;
+		
+	}
 	public void paint(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 		
@@ -76,7 +82,7 @@ public class LvlSel extends JPanel {
 		rr.setRoundRect(100.0, 150.0, 816.0, 500.0, 20.0, 20.0);
 
 		// draw background image + black tinted rectangle to darken it
-		g2d.drawImage(getMoon(), 0, 0, null);
+		g2d.drawImage(currImg, 0, 0, null);
         g.setColor(new Color(0,0,0,200));
         g.fillRect(0, 0, 1016, 839);
         
@@ -95,7 +101,7 @@ public class LvlSel extends JPanel {
         
         //sets the clip to the round rectangle + draws level button image
 	    g.setClip(rr);
-        g2d.drawImage(getMoon(), 100, 100, 816, 600, null);
+        g2d.drawImage(currImg, 100, 100, 816, 600, null);
         g.setClip(null);
         g.drawRoundRect(99, 149, 817, 501, 20, 20);
         
@@ -106,6 +112,7 @@ public class LvlSel extends JPanel {
       	int a = 956;
       	int b = 375;
       	int c = 54;
+      	
         g.setColor(new Color(204, 23, 9));
       	g.fillPolygon(new int[] {a, a, a+30}, new int[] {b, b+50, b+25}, 3);
       	g.fillPolygon(new int[] {c, c, c-30}, new int[] {b, b+50, b+25}, 3);
