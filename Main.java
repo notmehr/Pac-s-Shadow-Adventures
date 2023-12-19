@@ -4,12 +4,14 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.event.*;
 public class Main extends JPanel{
-	
-	 Pacman M = new Pacman();
-
-	 public Main() {
+	//Pacman coordinates
+	 private int px=500;
+	 private int py=250;
+	 
+	 Pacman M = new Pacman(px,py);
+	 
+	 public Main() { 
 		 
-
 		 addKeyListener(new KeyListener() {
 			 @Override
 			 public void keyTyped(KeyEvent e) {
@@ -25,10 +27,9 @@ public class Main extends JPanel{
 		 } 
 		 );
 		 setFocusable(true);
-
-	}
-	
 		 
+	} 
+	 
 	 private void move() {
 		 M.move();
 		 }
@@ -37,7 +38,7 @@ public class Main extends JPanel{
 	public void paint (Graphics g) {
 		super.paint(g);	
 		Graphics2D g2d = (Graphics2D) g;
-		M.paint(g2d);	
+		M.paint(g2d);
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				 RenderingHints.VALUE_ANTIALIAS_ON);	
 	}
@@ -58,9 +59,5 @@ public class Main extends JPanel{
 		 }
 		}
 
+
 }
-
-
-
-
-
