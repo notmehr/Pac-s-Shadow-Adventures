@@ -10,8 +10,35 @@ public class Lvl extends JPanel{
   
   private Map[][] grid = new Map[31][23];
   private LvlSel ls = new LvlSel();
-
+  private int pacx = 15;
+  private int pacy = 17;
+  Shadow s = new Shadow();
+  public Map[][] getGrid() {
+	  return grid;
+  }
+  //grid aka main
   public Lvl() {
+	  addKeyListener(new KeyListener() 
+		{
+			@Override
+			public void keyTyped(KeyEvent e) 
+			{
+
+			}
+			@Override
+			public void keyReleased(KeyEvent e) 
+			{
+			//	s.keyReleased(e);
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				//s.keyPressed(e);
+			}
+			
+		});
+		setFocusable(true);
+		
     try {
       FileReader fr = new FileReader("mapdata1.txt");
       BufferedReader br = new BufferedReader(fr);
@@ -74,8 +101,8 @@ public class Lvl extends JPanel{
           for(int j = 0; j<23; j++) { //prints vertically
         	  //horizontal margin is 35, so add 35 to every x value
         	  //vertical margin is 40 from the top, so add 40 to each y val
-        	  int x = 35 + 30*(i);
-        	  int y = 40 + 30*(j);
+        	  int x = 35 + 30*i;
+        	  int y = 40 + 30*j;
         	  g.setColor(Color.white);
         	  //if the value for that line is true, draw it
         	  if(grid[i][j].getLeft()) g.drawLine(x, y, x, y+30);
@@ -90,9 +117,10 @@ public class Lvl extends JPanel{
     
     //draw pac
     g.setColor(Color.yellow);
-    g.fillOval(35+30*15, 40+30*17, 30, 30);
+    g.fillOval(35+30*15+s.getX(), 40+30*17+s.getY(), 30, 30);
   }
-
+  
+  
   public static void main(String[] args) throws InterruptedException {
     JFrame frame = new JFrame("A");
     Lvl a = new Lvl();
