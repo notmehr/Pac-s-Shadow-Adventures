@@ -1,0 +1,524 @@
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Stroke;
+import java.awt.event.*;
+import java.awt.geom.RoundRectangle2D;
+import java.io.*;
+import javax.imageio.ImageIO;
+
+public class Menu 
+{
+	//Attributes
+	private Image titleScreen = null;
+	private Image box = null;
+	private Image textPlay = null;
+	private Image textOptions = null;
+	private Image textNewGame = null;
+	private Image textLoadGame = null;
+	private Image textAudio = null;
+	private Image textControls = null;
+	private Image textVolume = null;
+	private boolean select, up, down, raise, lower, play, options, newGame, loadGame, audio, controls, back;
+	private static boolean raiseVol, lowerVol;
+	private int x, y, x1, y1, count, selectCount, frame, volPercent;
+	
+	//Constructor
+	public Menu(int x, int y)
+	{
+		this.select = false;
+		this.down = false;
+		this.up = false;
+		this.play = false;
+		this.options = false;
+		this.newGame = false;
+		this.loadGame = false;
+		this.controls = false;
+		this.audio = false;
+		this.back = false;
+		this.x = x;
+		this.y = y;
+		this.x1 = 489;
+		this.y1 = 347;
+		this.count = 0;
+		this.selectCount = 0;
+		this.frame = 0;
+		this.raise = false;
+		this.lower = false;
+		this.volPercent = 50;
+		raiseVol = false;
+		lowerVol = false;
+		try
+		{
+			titleScreen = ImageIO.read(new File("TitleBackground.jfif"));
+			box = ImageIO.read(new File("box.png"));
+			textPlay = ImageIO.read(new File("Play.png"));
+			textOptions = ImageIO.read(new File("Options.png"));
+			textNewGame = ImageIO.read(new File("NewGame.png"));
+			textLoadGame = ImageIO.read(new File("LoadGame.png"));
+			textAudio = ImageIO.read(new File("Audio.png"));
+			textControls = ImageIO.read(new File("Controls.png"));
+			textVolume = ImageIO.read(new File("Volume.png"));
+		}
+		catch (IOException e)
+		{
+			System.out.println("Error");
+		}
+		titleScreen = titleScreen.getScaledInstance(1000, 800, Image.SCALE_DEFAULT);
+		box = box.getScaledInstance(425, 75, Image.SCALE_DEFAULT);
+		textPlay = textPlay.getScaledInstance(125, 50, Image.SCALE_DEFAULT);
+		textOptions = textOptions.getScaledInstance(220, 50, Image.SCALE_DEFAULT);
+		textNewGame = textNewGame.getScaledInstance(250, 50, Image.SCALE_DEFAULT);
+		textLoadGame = textLoadGame.getScaledInstance(275, 50, Image.SCALE_DEFAULT);
+		textAudio = textAudio.getScaledInstance(180, 50, Image.SCALE_DEFAULT);
+		textControls = textControls.getScaledInstance(250, 50, Image.SCALE_DEFAULT);
+		textVolume = textVolume.getScaledInstance(220, 50, Image.SCALE_DEFAULT);
+	}
+	
+	public static boolean getVolRaise()
+	{
+		return raiseVol;
+	}
+	
+	public static boolean getVolLower()
+	{
+		return lowerVol;
+	}
+	
+	public boolean getRaise()
+	{
+		return this.raise;
+	}
+	
+	public boolean getLower()
+	{
+		return this.lower;
+	}
+	
+	public boolean getPlay()
+	{
+		return this.play;
+	}
+	
+	public boolean getOptions()
+	{
+		return this.options;
+	}
+	
+	public boolean getNewGame()
+	{
+		return this.newGame;
+	}
+	
+	public boolean getLoadGame()
+	{
+		return this.loadGame;
+	}
+	
+	public boolean getAudio()
+	{
+		return this.audio;
+	}
+	
+	public boolean getControls()
+	{
+		return this.controls;
+	}
+	
+	public int getY1()
+	{
+		return this.y1;
+	}
+	
+	public void setY1(int val)
+	{
+		this.y1 = val;
+	}
+	
+	public void addCount()
+	{
+		this.count++;
+	}
+	
+	public int getCount()
+	{
+		return this.count;
+	}
+	
+	public void setFrame(int val)
+	{
+		this.frame = val;
+	}
+	
+	public int getFrame()
+	{
+		return this.frame;
+	}
+	
+	public void goForward()
+	{
+		this.selectCount++;
+	}
+	
+	public void goBack()
+	{
+		this.selectCount--;
+	}
+	
+	public int getSelect()
+	{
+		return this.selectCount;
+	}
+	
+	public void raiseVolume(int val)
+	{
+		this.x1 += val;
+	}
+	
+	public void lowerVolume(int val)
+	{
+		this.x1 -= val;
+	}
+	
+	public void setVolumePercent(int val)
+	{
+		this.volPercent += val;
+	}
+	
+	public int getVolPercent()
+	{
+		return this.volPercent;
+	}
+	
+	//Keyboard Input
+	public void keyPressed(KeyEvent e)
+	{
+		if (e.getKeyCode() == KeyEvent.VK_SPACE)
+		{
+			this.select = true;
+			this.goForward();
+			
+			if (this.select = true)
+			{
+				if (this.getCount() % 2 == 0)
+				{
+					if (this.getSelect() == 1)
+					{
+						this.play = true;
+						this.options = false;
+						this.setFrame(1);
+					}
+				}
+				else
+				{
+					if (this.getSelect() == 1)
+					{
+						this.play = false;
+						this.options = true;
+						this.setFrame(2);
+					}
+				}
+			}
+			
+			if (this.play == true)
+			{
+				if (this.getCount() % 2 == 0)
+				{
+					if (this.getSelect() == 2)
+					{
+						this.newGame = true;
+						this.loadGame = false;
+						this.setFrame(3);
+					}		
+				}
+				else
+				{
+					if (this.getSelect() == 2)
+					{
+						this.newGame = false;
+						this.loadGame = true;
+						this.setFrame(4);
+					}
+				}
+			}
+			
+			if (this.options == true)
+			{
+				if (this.getCount() % 2 == 0)
+				{
+					if (this.getSelect() == 2)
+					{
+						this.audio = true;
+						this.controls = false;
+						this.setFrame(5);
+					}
+				}
+				else
+				{
+					if (this.getSelect() == 2)
+					{
+						this.audio = false;
+						this.controls = true;
+						this.setFrame(6);
+					}
+				}
+			}
+		}
+		else if (e.getKeyCode() == KeyEvent.VK_UP)
+		{
+			this.up = true;
+			this.addCount();
+		}
+		else if (e.getKeyCode() == KeyEvent.VK_DOWN)
+		{
+			this.down = true;
+			this.addCount();
+		}
+		else if (e.getKeyCode() == KeyEvent.VK_RIGHT)
+		{
+			this.raise = true;
+		}
+	    else if (e.getKeyCode() == KeyEvent.VK_LEFT)
+		{
+			this.lower = true;
+		}
+	    else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
+		{
+    		this.back = true;
+    		if (this.getFrame() == 1)
+    		{
+    			this.setFrame(0);
+    			this.goBack();
+    		}
+    		else if (this.getFrame() == 2)
+    		{
+    			this.setFrame(0);
+    			this.goBack();
+    		}
+    		else if (this.getFrame() == 3)
+    		{
+    			this.setFrame(1);
+    			this.goBack();
+    		}
+    		else if (this.getFrame() == 4)
+    		{
+    			this.setFrame(1);
+    			this.goBack();
+    		}
+    		else if (this.getFrame() == 5)
+    		{
+    			this.setFrame(2);
+    			this.goBack();
+    		}
+    		else if (this.getFrame() == 6)
+    		{
+    			this.setFrame(2);
+    			this.goBack();
+    		}
+		}
+	}
+
+	// Allows the player to select 'Options' or 'Play'
+	public void move()
+	{
+		if (this.getCount() % 2 == 1)
+		{
+			this.setY1(497);
+		}
+		else
+		{
+			this.setY1(347);
+		}
+		
+		if (this.getAudio() == true)
+		{
+			if (raise == true)
+			{
+				if (this.getVolPercent() <= 90)
+				{
+					this.raiseVolume(36);
+					this.setVolumePercent(10);
+					raiseVol = true;
+					lowerVol = false;
+					raise = false;
+					lower = false;
+				}
+				else
+				{
+					this.raiseVolume(0);
+					raise = false;
+					lower = false;
+				}
+			}
+			
+			if (lower == true)
+			{
+				if (this.getVolPercent() >= 10)
+				{
+					this.lowerVolume(36);
+					this.setVolumePercent(-10);
+					lowerVol = true;
+					raiseVol = false;
+					lower = false;
+					raise = false;
+				}
+				else
+				{
+					this.lowerVolume(0);
+					lower = false;
+					raise = false;
+				}
+			}
+		}
+	}
+	
+	public void paint(Graphics g)
+	{
+		Graphics2D g2d = (Graphics2D) g;
+		RoundRectangle2D a = new RoundRectangle2D.Double();
+		RoundRectangle2D b = new RoundRectangle2D.Double();
+		int thickness = 10;
+		Stroke oldStroke = g2d.getStroke();
+		Color outline = new Color(250, 74, 47);
+		Color volBar = new Color(120, 108, 129, 255);
+		Color volSlider = new Color(216, 204, 226, 255);
+		Color backBox = new Color(142, 130, 151, 255);
+		
+		switch(this.frame)
+		{
+			case 0: // Main Menu
+			{
+				g2d.drawImage(titleScreen, 0, 0, null);
+				g2d.setColor(Color.WHITE);
+				g.setFont(new Font("DialogInput", Font.BOLD, 20));
+				g2d.drawString("[SPACEBAR] = select, [Arrow Keys] = up/down, [BACKSPACE] = back", 135, 785);
+				a.setRoundRect(296.0, 350.0, 425.0, 75.0, 25.0, 25.0);
+				b.setRoundRect(296.0, 500.0, 425.0, 75.0, 25.0, 25.0);
+				
+				g2d.setClip(a);
+				g2d.drawImage(box, this.x, this.y, null);
+				g2d.drawImage(textPlay, this.x+149, this.y+13, null);
+				g2d.setClip(null);
+				g2d.setClip(b);
+				g2d.drawImage(box, this.x, this.y+225, 425, -75, null);
+				g2d.drawImage(textOptions, this.x+102, this.y+162, null);
+				g2d.setClip(null);
+				
+				g2d.setStroke(new BasicStroke(thickness));
+				g2d.setColor(Color.BLACK);
+				g2d.drawRoundRect(this.x-2, this.getY1(), 429, 79, 25, 25);
+				thickness = 5;
+				g2d.setStroke(new BasicStroke(thickness));
+				g2d.setColor(outline);
+				g2d.drawRoundRect(this.x-2, this.getY1(), 429, 79, 25, 25);
+				break;
+			}
+			case 1: // Play Menu
+			{
+				g2d.drawImage(titleScreen, 0, 0, null);
+				g2d.setColor(Color.WHITE);
+				g.setFont(new Font("DialogInput", Font.BOLD, 20));
+				g2d.drawString("[SPACEBAR] = select, [Arrow Keys] = up/down, [BACKSPACE] = back", 135, 785);
+				a.setRoundRect(296.0, 350.0, 425.0, 75.0, 25.0, 25.0);
+				b.setRoundRect(296.0, 500.0, 425.0, 75.0, 25.0, 25.0);
+				
+				g2d.setClip(a);
+				g2d.drawImage(box, this.x, this.y, null);
+				g2d.drawImage(textNewGame, this.x+90, this.y+13, null);
+				g2d.setClip(null);
+				g2d.setClip(b);
+				g2d.drawImage(box, this.x, this.y+225, 425, -75, null);
+				g2d.drawImage(textLoadGame, this.x+75, this.y+162, null);
+				g2d.setClip(null);
+				
+				thickness = 10;
+				g2d.setStroke(new BasicStroke(thickness));
+				g2d.setColor(Color.BLACK);
+				g2d.drawRoundRect(this.x-2, this.getY1(), 429, 79, 25, 25);
+				thickness = 5;
+				g2d.setStroke(new BasicStroke(thickness));
+				g2d.setColor(outline);
+				g2d.drawRoundRect(this.x-2, this.getY1(), 429, 79, 25, 25);
+				break;	
+			}
+			case 2: // Options Menu
+			{
+				g2d.drawImage(titleScreen, 0, 0, null);
+				g2d.setColor(Color.WHITE);
+				g.setFont(new Font("DialogInput", Font.BOLD, 20));
+				g2d.drawString("[SPACEBAR] = select, [Arrow Keys] = up/down, [BACKSPACE] = back", 135, 785);
+				a.setRoundRect(296.0, 350.0, 425.0, 75.0, 25.0, 25.0);
+				b.setRoundRect(296.0, 500.0, 425.0, 75.0, 25.0, 25.0);
+				
+				g2d.setClip(a);
+				g2d.drawImage(box, this.x, this.y, null);
+				g2d.drawImage(textAudio, this.x+122, this.y+13, null);
+				g2d.setClip(null);
+				g2d.setClip(b);
+				g2d.drawImage(box, this.x, this.y+225, 425, -75, null);
+				g2d.drawImage(textControls, this.x+87, this.y+162, null);
+				g2d.setClip(null);
+				
+				thickness = 10;
+				g2d.setStroke(new BasicStroke(thickness));
+				g2d.setColor(Color.BLACK);
+				g2d.drawRoundRect(this.x-2, this.getY1(), 429, 79, 25, 25);
+				thickness = 5;
+				g2d.setStroke(new BasicStroke(thickness));
+				g2d.setColor(outline);
+				g2d.drawRoundRect(this.x-2, this.getY1(), 429, 79, 25, 25);
+				break;	
+			}
+			case 3: // New Game Menu
+			{
+				System.out.println("New Game");
+				break;	
+			}
+			case 4: // Load Menu
+			{
+				System.out.println("Load Game");
+				break;
+			}
+			case 5: // Volume Adjuster Menu
+			{
+				thickness = 5;
+				g2d.setStroke(new BasicStroke(thickness));
+				g2d.drawImage(titleScreen, 0, 0, null);
+				g2d.setColor(Color.WHITE);
+				g.setFont(new Font("DialogInput", Font.BOLD, 20));
+				g2d.drawString("[Left Key] = lower, [Right Key] = raise, [BACKSPACE] = back", 155, 785);
+				g2d.setColor(backBox);
+				g2d.fillRoundRect(this.x-38, 325, 500, 200, 50, 50);
+				g2d.setColor(Color.BLACK);
+				g2d.drawRoundRect(this.x-38, 325, 500, 200, 50, 50);
+				g2d.drawImage(textVolume, this.x+102, this.y, null);
+				thickness = 3;
+				g2d.setStroke(new BasicStroke(thickness));
+				g2d.setColor(volBar);
+				g2d.fillRoundRect(this.x+13, 422, 398, 40, 20, 20);
+				g2d.setColor(Color.BLACK);
+				g2d.drawRoundRect(this.x+13, 422, 398, 40, 20, 20);
+				g2d.setColor(volSlider);
+				g2d.fillRoundRect(this.x1, 412, 38, 60, 20, 20);
+				g2d.setColor(Color.BLACK);
+				g2d.drawRoundRect(this.x1, 412, 38, 60, 20, 20);
+				g2d.setColor(Color.WHITE);
+				g2d.drawString(String.valueOf(this.volPercent) + "%", 495, 500);
+				break;	
+			}
+			case 6: // Controls Menu
+			{
+				System.out.println("Controls");
+				break;	
+			}
+			default: // Prints an error message, if necessary
+			{
+				System.out.println("System Error");
+				break;
+			}
+		}
+	}
+}
