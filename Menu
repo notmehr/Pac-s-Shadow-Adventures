@@ -22,6 +22,7 @@ public class Menu
 	private Image textAudio = null;
 	private Image textControls = null;
 	private Image textVolume = null;
+	private Image textUnavailable = null;
 	private boolean select, up, down, raise, lower, play, options, newGame, loadGame, audio, controls, back;
 	private static boolean raiseVol, lowerVol;
 	private int x, y, x1, y1, count, selectCount, frame, volPercent;
@@ -62,6 +63,7 @@ public class Menu
 			textAudio = ImageIO.read(new File("Audio.png"));
 			textControls = ImageIO.read(new File("Controls.png"));
 			textVolume = ImageIO.read(new File("Volume.png"));
+			textUnavailable = ImageIO.read(new File("UNAVAILABLE.png"));
 		}
 		catch (IOException e)
 		{
@@ -76,6 +78,7 @@ public class Menu
 		textAudio = textAudio.getScaledInstance(180, 50, Image.SCALE_DEFAULT);
 		textControls = textControls.getScaledInstance(250, 50, Image.SCALE_DEFAULT);
 		textVolume = textVolume.getScaledInstance(220, 50, Image.SCALE_DEFAULT);
+		textUnavailable = textUnavailable.getScaledInstance(400, 50, Image.SCALE_DEFAULT);
 	}
 	
 	public static boolean getVolRaise()
@@ -507,11 +510,21 @@ public class Menu
 				g2d.drawRoundRect(this.x1, 412, 38, 60, 20, 20);
 				g2d.setColor(Color.WHITE);
 				g2d.drawString(String.valueOf(this.volPercent) + "%", 495, 500);
-				break;	
+				break;
 			}
 			case 6: // Controls Menu
 			{
-				System.out.println("Controls");
+				thickness = 5;
+				g2d.setStroke(new BasicStroke(thickness));
+				g2d.drawImage(titleScreen, 0, 0, null);
+				g2d.setColor(backBox);
+				g2d.fillRoundRect(this.x-38, 375, 500, 100, 50, 50);
+				g2d.setColor(Color.BLACK);
+				g2d.drawRoundRect(this.x-38, 375, 500, 100, 50, 50);
+				g2d.drawImage(textUnavailable, this.x+12, this.y+50, null);
+				g2d.setColor(Color.WHITE);
+				g.setFont(new Font("DialogInput", Font.BOLD, 20));
+				g2d.drawString("[BACKSPACE] = back", 395, 785);
 				break;	
 			}
 			default: // Prints an error message, if necessary
