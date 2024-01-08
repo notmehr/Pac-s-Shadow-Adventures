@@ -1,0 +1,82 @@
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+
+
+import java.awt.event.*;
+import java.awt.image.BufferedImage;
+public class GameFrame extends JPanel{
+private static final KeyListener KeyListener = null;
+	int Map_A[][] = {
+			 {0,0,0,0,0,0,0,0,0,0},
+			 {0,1,1,1,1,1,1,1,1,0},
+			 {0,1,1,1,1,1,1,1,0,0},
+			 {0,0,1,1,1,1,0,0,0,0},
+			 {0,0,1,1,1,1,1,1,0,0},
+			 {0,0,0,1,1,1,1,1,1,0},
+			 {0,0,0,0,0,1,1,1,1,0},
+			 {0,0,0,0,0,1,1,1,1,0},
+			 {0,1,1,1,1,1,1,1,1,0},
+			 {0,0,0,0,0,0,0,0,0,0},
+			 };
+	private Map a = new Map(0,0,Map_A);
+	private Pacman M = new Pacman ();
+	
+	 public GameFrame() {
+		   addKeyListener(new KeyListener() {
+				 @Override
+				 public void keyTyped(KeyEvent e) {
+				 }
+				 @Override
+				 public void keyReleased(KeyEvent e) {
+					 M.keyReleased(e);
+				 }
+				 @Override
+				 public void keyPressed(KeyEvent e) {
+					 M.keyPressed(e); 
+				 }
+			 }
+			 );
+			 setFocusable(true);
+	 }
+	 
+	  
+	private void move() {
+		M.move();
+	}
+	  	 
+	 
+	public void paint (Graphics g) {
+
+		super.paint(g);
+		a.paint(g);
+		M.paint(g);
+	
+
+	}
+	
+	
+	public static void main(String[] args) throws InterruptedException {	
+		JFrame frame = new JFrame("Window");
+		frame.setBackground(Color.black);
+		GameFrame gf = new GameFrame();	
+		frame.setSize(615,635);
+		frame.setVisible(true);
+		frame.add(gf);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		while (true)
+		 {
+		 gf.move(); //Updates the coordinates 
+		 gf.repaint(); //Calls the paint method
+		 Thread.sleep(10); //Pauses for a moment
+		 }
+		}
+
+}
+
+
+
