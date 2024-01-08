@@ -1,0 +1,61 @@
+import javax.swing.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+public class Map {
+	private int x, y;
+	private int columns=10;
+	private int rows=10;
+	public int [][] Map_X = new int [columns][rows];
+	public int [][] Block = new int [columns][rows];
+	public int block_len=60;
+	public int Screen_Size=block_len*columns*rows;
+	
+	Map(int x, int y,int [][] MAP_A){	
+		this.x=x;
+		this.y=y;
+		for(int i=0;i<10; i++) {
+			for (int j=0;j<10;j++) {	
+		this.Map_X[i][j]= MAP_A[i][j];	
+		}
+		}
+		
+	}
+
+	public void paint(Graphics g2d) {
+		
+		g2d.setColor(Color.LIGHT_GRAY);
+		g2d.fillRect(0,0,Screen_Size,Screen_Size);
+		
+		int x = this.x;
+		int y = this.y;
+		for(int i=0;i<10; i++) {
+			for (int j=0;j<10;j++) {	
+			if (Map_X[i][j]==1) {
+				g2d.setColor(Color.black);
+				g2d.fillRect(x,y,block_len,block_len);
+				g2d.setColor(Color.gray);
+				g2d.drawRect(x,y,block_len,block_len);
+		
+				x+=block_len;		
+			}
+			else {
+				g2d.setColor(Color.blue);
+				g2d.fillRect(x,y,block_len,block_len);
+				x+=block_len;	
+			}
+			}	
+		y+=block_len;
+		x = this.x;	
+		}
+	
+	
+		
+}
+}
